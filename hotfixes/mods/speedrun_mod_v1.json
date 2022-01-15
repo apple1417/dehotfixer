@@ -1838,6 +1838,30 @@
     {
       "key": "SparkCharacterLoadedEntry14170306",
       "value": "(1,1,0,BPChar_Nekrobug_HopperSwarm),/Game/Enemies/Nekrobug/_Unique/HopperSwarm/_Design/Character/BPChar_Nekrobug_HopperSwarm.BPChar_Nekrobug_HopperSwarm_C:AIBalanceState_GEN_VARIABLE,DropOnDeathItemPools.ItemPools.ItemPools[0].PoolProbability,0,,(BaseValueConstant=0.300000,DataTableValue=(DataTable=DataTable'\"/Game/GameData/Loot/ItemPools/Table_LegendarySpecificLootOdds.Table_LegendarySpecificLootOdds\"',RowName=\\\"HopperSwarmer\\\",ValueName=\\\"LegendaryDropChance_Playthrough2_50_11E6C8E8493E0A73AF9B35891E7CE111\\\"),BaseValueAttribute=None,AttributeInitializer=None,BaseValueScale=1.000000)"
+    },
+    {
+      "key": "SparkPatchEntry14170309",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard/Challenges/ChallengeList_Vaultcard01_Daily.ChallengeList_Vaultcard01_Daily,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170310",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard/Challenges/ChallengeList_Vaultcard01_Weekly.ChallengeList_Vaultcard01_Weekly,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170311",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard2/Challenges/ChallengeList_Vaultcard02_Daily.ChallengeList_Vaultcard02_Daily,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170312",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard2/Challenges/ChallengeList_Vaultcard02_Weekly.ChallengeList_Vaultcard02_Weekly,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170313",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard3/Challenges/ChallengeList_Vaultcard03_Daily.ChallengeList_Vaultcard03_Daily,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170314",
+      "value": "(1,1,0,),/Game/PatchDLC/VaultCard3/Challenges/ChallengeList_Vaultcard03_Weekly.ChallengeList_Vaultcard03_Weekly,Challenges,0,,()"
     }
   ]
 }
