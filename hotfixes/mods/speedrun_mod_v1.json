@@ -1862,6 +1862,54 @@
     {
       "key": "SparkPatchEntry14170314",
       "value": "(1,1,0,),/Game/PatchDLC/VaultCard3/Challenges/ChallengeList_Vaultcard03_Weekly.ChallengeList_Vaultcard03_Weekly,Challenges,0,,()"
+    },
+    {
+      "key": "SparkPatchEntry14170317",
+      "value": "(1,1,0,),/Game/GameData/Loot/ItemPools/Unique/ItemPool_Skeksis_Skrakk.ItemPool_Skeksis_Skrakk,BalancedItems.BalancedItems[0].Weight.BaseValueScale,0,,0"
+    },
+    {
+      "key": "SparkPatchEntry14170320",
+      "value": "(1,1,0,),/Game/Missions/Plot/Mission_Ep04_EarnSpaceship.Default__Mission_Ep04_EarnSpaceship_C:RewardData_OakMissionRewardData,ItemPoolReward,0,,/Game/Enemies/Punk_Female/_Unique/MotherOfDragons/_Design/Loot/ItemPool_MotherOfDragons_Loot.ItemPool_MotherOfDragons_Loot"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170321",
+      "value": "(1,1,0,MatchAll),/Game/Enemies/Punk_Female/_Unique/MotherOfDragons/_Design/Loot/ItemPool_MotherOfDragons_Loot.ItemPool_MotherOfDragons_Loot,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis\"',Weight=(BaseValueAttribute=/Game/GameData/Attributes/PlayerClass/Att_MissionRewardPlayerClassWeight_Beastmaster.Att_MissionRewardPlayerClassWeight_Beastmaster,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis\"',Weight=(BaseValueAttribute=/Game/GameData/Attributes/PlayerClass/Att_MissionRewardPlayerClassWeight_Gunner.Att_MissionRewardPlayerClassWeight_Gunner,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/TheLeech/Balance/Balance_PS_VLA_TheLeech.Balance_PS_VLA_TheLeech,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/TheLeech/Balance/Balance_PS_VLA_TheLeech.Balance_PS_VLA_TheLeech\"',Weight=(BaseValueAttribute=/Game/GameData/Attributes/PlayerClass/Att_MissionRewardPlayerClassWeight_Operative.Att_MissionRewardPlayerClassWeight_Operative,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Nemesis/Balance/Balance_DAL_PS_Nemesis.Balance_DAL_PS_Nemesis\"',Weight=(BaseValueAttribute=/Game/GameData/Attributes/PlayerClass/Att_MissionRewardPlayerClassWeight_Siren.Att_MissionRewardPlayerClassWeight_Siren,BaseValueScale=1)))"
+    },
+    {
+      "key": "SparkCharacterLoadedEntry14170322",
+      "value": "(1,1,0,BPChar_PunkMotherOfDragons),/Game/Enemies/Punk_Female/_Unique/MotherOfDragons/_Design/Loot/ItemPool_MotherOfDragons_Loot.ItemPool_MotherOfDragons_Loot,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/Shotguns/Tediore/_Shared/_Design/_Unique/Sludge/Balance/Balance_SG_TED_Sludge.Balance_SG_TED_Sludge,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Shotguns/Tediore/_Shared/_Design/_Unique/Sludge/Balance/Balance_SG_TED_Sludge.Balance_SG_TED_Sludge\"',Weight=(BaseValueConstant=1,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Hornet/Balance/Balance_DAL_PS_Hornet.Balance_DAL_PS_Hornet,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/Hornet/Balance/Balance_DAL_PS_Hornet.Balance_DAL_PS_Hornet\"',Weight=(BaseValueConstant=1,BaseValueScale=1)))"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170325",
+      "value": "(1,1,0,MatchAll),/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/TheLeech/Balance/Balance_PS_VLA_TheLeech.Balance_PS_VLA_TheLeech,RuntimeGenericPartList.PartList.PartList[56].Weight.BaseValueScale,0,,999999999"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170328",
+      "value": "(1,1,0,City_P),/Game/Lootables/Mission_Specific/HostileTakeover/LootDef_Maliwan_ZerosGun.LootDef_Maliwan_ZerosGun,DefaultLoot.DefaultLoot[0].ItemAttachments.ItemAttachments[0].ItemPool,0,,/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_DemoSkaggon.ItemPool_DemoSkaggon"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170329",
+      "value": "(1,1,0,City_P),/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_DemoSkaggon.ItemPool_DemoSkaggon,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common\"',Weight=(BaseValueConstant=1,BaseValueScale=1)))"
+    },
+    {
+      "key": "SparkCharacterLoadedEntry14170330",
+      "value": "(1,1,0,BPChar_Skag_Rare01),/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_DemoSkaggon.ItemPool_DemoSkaggon,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/_Unique/TheHunter/Hunted/Balance/Balance_SR_JAK_Hunted,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/_Unique/TheHunter/Hunted/Balance/Balance_SR_JAK_Hunted\"',Weight=(BaseValueConstant=1,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/_Unique/Monocle/Balance/Balance_SR_JAK_Monocle.Balance_SR_JAK_Monocle,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/_Unique/Monocle/Balance/Balance_SR_JAK_Monocle.Balance_SR_JAK_Monocle\"',Weight=(BaseValueConstant=1,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/Weapons/SMGs/Dahl/_Shared/_Design/_Unique/Demoskag/Balance/Balance_SM_DAL_Demoskag.Balance_SM_DAL_Demoskag,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/SMGs/Dahl/_Shared/_Design/_Unique/Demoskag/Balance/Balance_SM_DAL_Demoskag.Balance_SM_DAL_Demoskag\"',Weight=(BaseValueConstant=1,BaseValueScale=1)))"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170331",
+      "value": "(1,1,0,MatchAll),/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,RuntimePartList.AllParts.AllParts[4].Weight.BaseValueScale,0,,1"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170332",
+      "value": "(1,1,0,MatchAll),/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,RuntimePartList.AllParts.AllParts[5].Weight.BaseValueScale,0,,1"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170333",
+      "value": "(1,1,0,City_P),/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,RuntimePartList.AllParts.AllParts[4].Weight.BaseValueScale,0,,0"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170334",
+      "value": "(1,1,0,City_P),/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,RuntimePartList.AllParts.AllParts[5].Weight.BaseValueScale,0,,0"
     }
   ]
 }
