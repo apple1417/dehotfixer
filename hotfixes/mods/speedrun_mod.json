@@ -1881,7 +1881,7 @@
     },
     {
       "key": "SparkLevelPatchEntry14170325",
-      "value": "(1,1,0,MatchAll),/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/TheLeech/Balance/Balance_PS_VLA_TheLeech.Balance_PS_VLA_TheLeech,RuntimeGenericPartList.PartList.PartList[56].Weight.BaseValueScale,0,,999999999"
+      "value": "(1,1,0,MatchAll),/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/TheLeech/Balance/Balance_PS_VLA_TheLeech.Balance_PS_VLA_TheLeech,RuntimeGenericPartList,0,,(bEnabled=True,PartList=((PartData=/Game/PatchDLC/Ixora/Gear/Weapons/EndGameParts/Gunner/RailgunDamage/GPart_Gunner_RailgunDamage.GPart_Gunner_RailgunDamage,Weight=(BaseValueConstant=1,BaseValueScale=1)))"
     },
     {
       "key": "SparkLevelPatchEntry14170328",
@@ -1910,6 +1910,18 @@
     {
       "key": "SparkLevelPatchEntry14170334",
       "value": "(1,1,0,City_P),/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/BalanceState/Balance_PS_MAL_01_Common.Balance_PS_MAL_01_Common,RuntimePartList.AllParts.AllParts[5].Weight.BaseValueScale,0,,0"
+    },
+    {
+      "key": "SparkPatchEntry14170337",
+      "value": "(1,1,0,),/Game/Missions/Plot/Mission_Ep22_TheMachine.Default__Mission_Ep22_TheMachine_C:RewardData_OakMissionRewardData,ItemPoolReward,0,,/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_Warty.ItemPool_Warty"
+    },
+    {
+      "key": "SparkLevelPatchEntry14170338",
+      "value": "(1,1,0,MatchAll),/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_Warty.ItemPool_Warty,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/HeavyWeapons/ATL/_Shared/_Design/_Unique/RubysWrath/Balance/Balance_HW_ATL_RubysWrath.Balance_HW_ATL_RubysWrath,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/HeavyWeapons/ATL/_Shared/_Design/_Unique/RubysWrath/Balance/Balance_HW_ATL_RubysWrath.Balance_HW_ATL_RubysWrath\"',Weight=(BaseValueConstant=1,BaseValueScale=1)))"
+    },
+    {
+      "key": "SparkCharacterLoadedEntry14170339",
+      "value": "(1,1,0,BPChar_Tink_Rare01),/Game/PatchDLC/Raid1/GameData/Loot/ItemPools/ItemPool_Warty.ItemPool_Warty,BalancedItems,0,,((InventoryBalanceData=/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/AAA/Balance/Balance_DAL_PS_AAA.Balance_DAL_PS_AAA,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/_Unique/AAA/Balance/Balance_DAL_PS_AAA.Balance_DAL_PS_AAA\"',Weight=(BaseValueConstant=1,BaseValueScale=1)),(InventoryBalanceData=/Game/Gear/GrenadeMods/_Design/_Unique/Quasar/Balance/InvBalD_GM_Quasar.InvBalD_GM_Quasar,ResolvedInventoryBalanceData=InventoryBalanceData'\"/Game/Gear/GrenadeMods/_Design/_Unique/Quasar/Balance/InvBalD_GM_Quasar.InvBalD_GM_Quasar\"',Weight=(BaseValueConstant=1,BaseValueScale=1)))"
     }
   ]
 }
