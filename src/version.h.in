@@ -1,0 +1,10 @@
+#ifndef VERSION_H_H
+#define VERSION_H_H
+
+// This header is modified by cmake to insert the relevant strings
+
+#define VERSION_MAJOR "@PROJECT_VERSION_MAJOR@"
+#define VERSION_MINOR "@PROJECT_VERSION_MINOR@"
+#define VERSION_STRING "v" VERSION_MAJOR "." VERSION_MINOR
+
+#endif /* VERSION_H_H */
