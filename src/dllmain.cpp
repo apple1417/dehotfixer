@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "time_travel.h"
+
 namespace {
 
 /**
@@ -9,6 +11,8 @@ namespace {
  * @return unused.
  */
 DWORD WINAPI startup_thread(LPVOID /*unused*/) {
+    dhf::time::init();
+
     return 1;
 }
 
