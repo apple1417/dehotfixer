@@ -50,11 +50,11 @@ void init(void) {
                              reinterpret_cast<LPVOID>(&refresh_challenge_list_hook),
                              reinterpret_cast<LPVOID*>(&original_refresh_challenge_list_ptr));
     if (ret != MH_OK) {
-        // throw std::runtime_error("MH_CreateHook failed " + std::to_string(ret));
+        throw std::runtime_error("MH_CreateHook failed " + std::to_string(ret));
     }
     ret = MH_EnableHook(reinterpret_cast<LPVOID>(refresh));
     if (ret != MH_OK) {
-        // throw std::runtime_error("MH_EnableHook failed " + std::to_string(ret));
+        throw std::runtime_error("MH_EnableHook failed " + std::to_string(ret));
     }
 }
 

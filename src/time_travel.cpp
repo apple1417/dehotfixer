@@ -1,4 +1,6 @@
 #include "pch.h"
+#include <cstddef>
+#include <stdexcept>
 
 #include "memory.h"
 #include "time_travel.h"
@@ -135,18 +137,34 @@ void inject_shellcode(uintptr_t loc, size_t size, int32_t stack_offset) {
 
 void init(void) {
     auto gameplay_globals = sigscan(GAMEPLAY_GLOBALS);
+    if (gameplay_globals == 0) {
+        throw std::runtime_error(
+            "Couldn't find signature for UGameplayGlobals::GenerateCurrentWeekSeed");
+    }
     inject_shellcode(gameplay_globals, GAMEPLAY_GLOBALS_SIZE, GAMEPLAY_GLOBALS_STACK_OFFSET);
 
     auto patch_helper = sigscan(PATCH_HELPER);
+    if (patch_helper == 0) {
+        throw std::runtime_error(
+            "Couldn't find signature for FOakPatchHelper::GenerateCurrentWeekSeed");
+    }
     inject_shellcode(patch_helper, PATCH_HELPER_SIZE, PATCH_HELPER_STACK_OFFSET);
 
     auto vault_card_day = sigscan(VAULT_CARD_DAY);
+    if (vault_card_day == 0) {
+        throw std::runtime_error(
+            "Couldn't find signature for FVaultCardManager::GenerateCurrentDaySeed");
+    }
     inject_shellcode(vault_card_day + VAULT_CARD_DAY_P1_OFFSET, VAULT_CARD_DAY_P1_SIZE,
                      VAULT_CARD_DAY_P1_STACK_OFFSET);
     inject_shellcode(vault_card_day + VAULT_CARD_DAY_P2_OFFSET, VAULT_CARD_DAY_P2_SIZE,
                      VAULT_CARD_DAY_P2_STACK_OFFSET);
 
     auto vault_card_week = sigscan(VAULT_CARD_WEEK);
+    if (vault_card_week == 0) {
+        throw std::runtime_error(
+            "Couldn't find signature for FVaultCardManager::GenerateCurrentWeekSeed");
+    }
     inject_shellcode(vault_card_week + VAULT_CARD_WEEK_P1_OFFSET, VAULT_CARD_WEEK_P1_SIZE,
                      VAULT_CARD_WEEK_P1_STACK_OFFSET);
     inject_shellcode(vault_card_week + VAULT_CARD_WEEK_P2_OFFSET, VAULT_CARD_WEEK_P2_SIZE,

@@ -1,9 +1,13 @@
 #include "pch.h"
 
+#include "settings.h"
 #include "time_travel.h"
 #include "vault_cards.h"
+#include "version.h"
 
 namespace {
+
+HMODULE this_module;
 
 /**
  * @brief Main startup thread.
@@ -12,13 +16,27 @@ namespace {
  * @return unused.
  */
 DWORD WINAPI startup_thread(LPVOID /*unused*/) {
-    if (MH_Initialize() != MH_OK) {
-        // throw std::runtime_error("Minhook initialization failed!");
+    dhf::settings::init(this_module);
+
+    std::cout << "[dhf] Initalizing\n";
+
+    auto mh_ret = MH_Initialize();
+    if (mh_ret != MH_OK) {
+        std::cerr << "[dhf] Minhook initialization failed: " << mh_ret << "\n";
         return 0;
     }
 
-    dhf::time::init();
-    dhf::vault_cards::init();
+    try {
+        if (dhf::settings::is_bl3()) {
+            std::cout << "[dhf] Detected BL3, injecting extra hooks\n";
+            dhf::time::init();
+            dhf::vault_cards::init();
+        }
+    } catch (std::exception& ex) {
+        std::cerr << "[dhf] Exception occured during initalization: " << ex.what() << "\n";
+    }
+
+    std::cout << "[dhf] Dehotfixer " VERSION_STRING " loaded\n";
 
     return 1;
 }
@@ -36,6 +54,7 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
 BOOL APIENTRY DllMain(HMODULE h_module, DWORD ul_reason_for_call, LPVOID /*unused*/) {
     switch (ul_reason_for_call) {
         case DLL_PROCESS_ATTACH:
+            this_module = h_module;
             DisableThreadLibraryCalls(h_module);
             CreateThread(nullptr, 0, &startup_thread, nullptr, 0, nullptr);
             break;
