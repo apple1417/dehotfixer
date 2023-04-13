@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "time_travel.h"
+#include "vault_cards.h"
 
 namespace {
 
@@ -11,7 +12,13 @@ namespace {
  * @return unused.
  */
 DWORD WINAPI startup_thread(LPVOID /*unused*/) {
+    if (MH_Initialize() != MH_OK) {
+        // throw std::runtime_error("Minhook initialization failed!");
+        return 0;
+    }
+
     dhf::time::init();
+    dhf::vault_cards::init();
 
     return 1;
 }

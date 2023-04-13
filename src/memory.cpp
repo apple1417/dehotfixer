@@ -62,6 +62,14 @@ uintptr_t sigscan(const Pattern& pattern) {
     return 0;
 }
 
+uintptr_t read_offset(uintptr_t address) {
+    if constexpr (sizeof(uintptr_t) == sizeof(uint64_t)) {
+        return address + *reinterpret_cast<int32_t*>(address) + 4;
+    } else {
+        return *reinterpret_cast<uintptr_t*>(address);
+    }
+}
+
 void unlock_range(uintptr_t start, size_t size) {
     DWORD old_protect = 0;
     if (VirtualProtect(reinterpret_cast<LPVOID>(start), size, PAGE_EXECUTE_READWRITE, &old_protect)

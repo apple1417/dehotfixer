@@ -7,14 +7,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 project(dehotfixer VERSION 1.0)
 
+add_subdirectory(libs/minhook)
+
+
 configure_file(versioninfo.rc.in versioninfo.rc)
 configure_file(src/version.h.in build_overrides/version.h)
-
 
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 add_library(dehotfixer SHARED ${sources} "${PROJECT_BINARY_DIR}/versioninfo.rc")
 
 target_include_directories(dehotfixer PUBLIC "${PROJECT_BINARY_DIR}/build_overrides" "src")
+target_link_libraries(dehotfixer PUBLIC minhook)
 
 target_precompile_headers(dehotfixer PUBLIC "src/pch.h")
 

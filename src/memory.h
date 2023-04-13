@@ -50,6 +50,19 @@ T sigscan(const Pattern& pattern) {
 }
 
 /**
+ * @brief Reads an assembly offset, and gets the address it points to.
+ *
+ * @tparam T The type to cast the result to.
+ * @param address The address of the offset.
+ * @return The address it points to.
+ */
+uintptr_t read_offset(uintptr_t address);
+template <typename T>
+T read_offset(uintptr_t address) {
+    return reinterpret_cast<T>(read_offset(address));
+}
+
+/**
  * @brief Unlocks a region of memory for full read/write access. Intended for hex edits.
  *
  * @param start The start of the range to unlock.

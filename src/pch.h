@@ -5,6 +5,8 @@
 #define NOMINMAX
 #include <Windows.h>
 
+#include <MinHook.h>
+
 #ifdef __cplusplus
 
 #include <chrono>
