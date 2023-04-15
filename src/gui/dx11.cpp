@@ -14,15 +14,6 @@ namespace {
 const constexpr auto PRESENT_FUNC_IDX = 8;
 const constexpr auto RESIZE_BUFFERS_FUNC_IDX = 13;
 
-const constexpr GUID ID3D11DEVICE_RIID = {0xdb6f6ddb,
-                                          0xac77,
-                                          0x4e88,
-                                          {0x82, 0x53, 0x81, 0x9d, 0xf9, 0xbb, 0xf1, 0x40}};
-const constexpr GUID ID3D11TEXTURE2D_RRID = {0x6f15aaf2,
-                                             0xd208,
-                                             0x4e89,
-                                             {0x9a, 0xb4, 0x48, 0x95, 0x35, 0xd3, 0x4f, 0x9c}};
-
 ID3D11DeviceContext* context{};
 ID3D11Device* device{};
 ID3D11RenderTargetView* main_render_view = nullptr;
@@ -36,7 +27,7 @@ ID3D11RenderTargetView* main_render_view = nullptr;
 bool create_main_render_view(IDXGISwapChain* swap_chain) {
     ID3D11Texture2D* back_buffer{};
     auto ret =
-        swap_chain->GetBuffer(0, ID3D11TEXTURE2D_RRID, reinterpret_cast<void**>(&back_buffer));
+        swap_chain->GetBuffer(0, IID_ID3D11Texture2D, reinterpret_cast<void**>(&back_buffer));
     if (ret != S_OK) {
         std::cerr << "DX11 hook initalization failed: Couldn't get texture buffer (" << ret
                   << ")!\n";
@@ -57,13 +48,12 @@ bool create_main_render_view(IDXGISwapChain* swap_chain) {
 }
 
 /**
- * @brief Initalizes the dx11 hook.
- * @note Does nothing on subsequent calls.
+ * @brief Initalizes the dx11 hook if it isn't already.
  *
  * @param swap_chain The in use swap chain.
  * @return True if the hook was successfully initalized, false otherwise.
  */
-bool initalize(IDXGISwapChain* swap_chain) {
+bool ensure_initalized(IDXGISwapChain* swap_chain) {
     static bool initalized = false;
     static bool run_once = false;
     if (run_once) {
@@ -74,12 +64,12 @@ bool initalize(IDXGISwapChain* swap_chain) {
     DXGI_SWAP_CHAIN_DESC desc;
     auto ret = swap_chain->GetDesc(&desc);
     if (ret != S_OK) {
-        std::cerr << "DX11 hook initalization failed: Couldn't get swap chain description (" << ret
+        std::cerr << "DX11 hook initalization failed: Couldn't get swap chain descriptor (" << ret
                   << ")!\n";
         return false;
     }
 
-    ret = swap_chain->GetDevice(ID3D11DEVICE_RIID, reinterpret_cast<void**>(&device));
+    ret = swap_chain->GetDevice(IID_ID3D11Device, reinterpret_cast<void**>(&device));
     if (ret != S_OK) {
         std::cerr << "DX11 hook initalization failed: Couldn't get device (" << ret << ")!\n";
         return false;
@@ -120,7 +110,7 @@ present_func present_ptr;
  * @brief Hook for `IDXGISwapChain::Present`, used to inject imgui.
  */
 HRESULT present_hook(IDXGISwapChain* self, UINT sync_interval, UINT flags) {
-    if (initalize(self)) {
+    if (ensure_initalized(self)) {
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();

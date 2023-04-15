@@ -32,7 +32,15 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 add_library(dehotfixer SHARED ${sources} "${PROJECT_BINARY_DIR}/versioninfo.rc")
 
 target_include_directories(dehotfixer PUBLIC "${PROJECT_BINARY_DIR}/build_overrides" "src")
-target_link_libraries(dehotfixer PUBLIC minhook kiero imgui d3d11.lib)
+target_link_libraries(dehotfixer PUBLIC
+    minhook
+    kiero
+    imgui
+
+    dxguid.lib
+    d3d11.lib
+    d3d12.lib
+)
 
 target_precompile_headers(dehotfixer PUBLIC "src/pch.h")
 

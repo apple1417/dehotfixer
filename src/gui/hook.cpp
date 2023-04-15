@@ -1,6 +1,8 @@
 #include "pch.h"
+#include <chrono>
 
 #include "gui/dx11.h"
+#include "gui/dx12.h"
 #include "gui/hook.h"
 
 namespace dhf::gui {
@@ -57,13 +59,26 @@ LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param)
 }  // namespace
 
 void init(void) {
-    auto ret = kiero::init(kiero::RenderType::D3D11);
-    if (ret != kiero::Status::Success) {
-        throw std::runtime_error("Failed to initalize graphics overlay hook: "
-                                 + std::to_string(ret));
-    }
+    // We use `d3d11.dll` as the injector
+    // This means `d3d12.dll` might not have been loaded yet (assuming we're using it), which'd
+    // cause autodetection to fail.
+    // As a workaround hack, we'll just sleep for a bit to let it get loaded
 
-    dx11::hook();
+    // NOLINTNEXTLINE(readability-magic-numbers)
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // Need to check dx12 first, since dx11 will still get a hit when running it
+    if (kiero::init(kiero::RenderType::D3D12) == kiero::Status::Success) {
+        dx12::hook();
+    } else {
+        auto ret = kiero::init(kiero::RenderType::D3D11);
+        if (ret == kiero::Status::Success) {
+            dx11::hook();
+        } else {
+            throw std::runtime_error("Failed to initalize graphics overlay: "
+                                     + std::to_string(ret));
+        }
+    }
 }
 
 bool hook_keys(HWND h_wnd) {

@@ -28,13 +28,13 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
     }
 
     try {
-        dhf::gui::init();
-
         if (dhf::settings::is_bl3()) {
             std::cout << "[dhf] Detected BL3, injecting extra hooks\n";
             dhf::time::init();
             dhf::vault_cards::init();
         }
+
+        dhf::gui::init();
     } catch (std::exception& ex) {
         std::cerr << "[dhf] Exception occured during initalization: " << ex.what() << "\n";
     }

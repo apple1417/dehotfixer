@@ -7,6 +7,7 @@
 
 #include <d3d11.h>
 #include <d3d12.h>
+#include <dxgi1_4.h>
 
 #include <MinHook.h>
 
@@ -34,6 +35,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND h_wnd,
 #include <optional>
 #include <ratio>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <vector>
 
