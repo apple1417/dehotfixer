@@ -9,6 +9,21 @@ project(dehotfixer VERSION 1.0)
 
 add_subdirectory(libs/minhook)
 
+add_library(imgui OBJECT
+    "libs/imgui/imgui_demo.cpp"
+    "libs/imgui/imgui_draw.cpp"
+    "libs/imgui/imgui_tables.cpp"
+    "libs/imgui/imgui_widgets.cpp"
+    "libs/imgui/imgui.cpp"
+    "libs/imgui/backends/imgui_impl_dx11.cpp"
+    "libs/imgui/backends/imgui_impl_dx12.cpp"
+    "libs/imgui/backends/imgui_impl_win32.cpp"
+)
+target_include_directories(imgui PUBLIC "libs/imgui" "libs/imgui/backends")
+
+add_library(kiero OBJECT "libs/kiero/kiero.cpp")
+target_include_directories(kiero PUBLIC "libs/kiero")
+target_link_libraries(kiero PUBLIC minhook)
 
 configure_file(versioninfo.rc.in versioninfo.rc)
 configure_file(src/version.h.in build_overrides/version.h)
@@ -17,7 +32,7 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 add_library(dehotfixer SHARED ${sources} "${PROJECT_BINARY_DIR}/versioninfo.rc")
 
 target_include_directories(dehotfixer PUBLIC "${PROJECT_BINARY_DIR}/build_overrides" "src")
-target_link_libraries(dehotfixer PUBLIC minhook)
+target_link_libraries(dehotfixer PUBLIC minhook kiero imgui d3d11.lib)
 
 target_precompile_headers(dehotfixer PUBLIC "src/pch.h")
 
