@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "gui/hook.h"
+#include "hfdat.h"
 #include "settings.h"
 #include "time_travel.h"
 #include "vault_cards.h"
@@ -28,6 +29,8 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
     }
 
     try {
+        dhf::hfdat::init();
+
         if (dhf::settings::is_bl3()) {
             std::cout << "[dhf] Detected BL3, injecting extra hooks\n";
             dhf::time::init();

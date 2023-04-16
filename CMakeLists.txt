@@ -9,6 +9,8 @@ project(dehotfixer VERSION 1.0)
 
 add_subdirectory(libs/minhook)
 
+include(cmake/libarchive_hack.cmake)
+
 add_library(imgui OBJECT
     "libs/imgui/imgui_demo.cpp"
     "libs/imgui/imgui_draw.cpp"
@@ -36,6 +38,7 @@ target_link_libraries(dehotfixer PUBLIC
     minhook
     kiero
     imgui
+    archive_static
 
     dxguid.lib
     d3d11.lib

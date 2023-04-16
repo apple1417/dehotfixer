@@ -8,9 +8,11 @@ namespace {
 const constexpr auto BL3_EXECUTABLE_NAME = "Borderlands3";
 
 std::filesystem::path exe_path{};
-std::filesystem::path dll_path{};
+std::filesystem::path dll_path_internal{};
 
 }  // namespace
+
+const std::filesystem::path& dll_path = dll_path_internal;
 
 void init(HMODULE this_module) {
     std::string cmd{GetCommandLineA()};
@@ -20,7 +22,7 @@ void init(HMODULE this_module) {
         exe_path = std::filesystem::path{buf};
     }
     if (GetModuleFileNameA(this_module, &buf[0], sizeof(buf)) != 0) {
-        dll_path = std::filesystem::path{buf};
+        dll_path_internal = std::filesystem::path{buf};
     }
 }
 

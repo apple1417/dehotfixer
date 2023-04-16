@@ -5,6 +5,9 @@
 
 namespace dhf::settings {
 
+/// The path to this dll
+extern const std::filesystem::path& dll_path;
+
 /**
  * @brief Initalizes the settings module.
  *

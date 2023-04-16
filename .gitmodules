@@ -4,3 +4,9 @@
 [submodule "libs/imgui"]
 	path = libs/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "libs/zlib"]
+	path = libs/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "libs/libarchive"]
+	path = libs/libarchive
+	url = https://github.com/libarchive/libarchive.git

@@ -11,6 +11,9 @@
 
 #include <MinHook.h>
 
+#include <archive.h>
+#include <archive_entry.h>
+
 #ifdef __cplusplus
 
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -32,6 +35,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND h_wnd,
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <ratio>
 #include <string>
