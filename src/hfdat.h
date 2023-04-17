@@ -6,7 +6,7 @@
 namespace dhf::hfdat {
 
 /// A list of all the loaded hotfix file names (including ordering chars).
-extern const std::vector<std::string>& hotfix_files;
+extern const std::vector<std::string>& hotfix_names;
 
 /// The name of the hfdat file hotfixes were loaded from.
 extern const std::string& hfdat_name;

@@ -30,6 +30,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND h_wnd,
 
 #include <kiero.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 #include <exception>

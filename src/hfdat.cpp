@@ -1,6 +1,4 @@
 #include "pch.h"
-#include <stdexcept>
-#include <string>
 
 #include "archive.h"
 #include "archive_entry.h"
@@ -59,7 +57,7 @@ void init(void) {
         hfdat_name_internal = "n/a";
         return;
     }
-    hfdat_name_internal = hfdat_path.stem().generic_string();
+    hfdat_name_internal = hfdat_path.filename().generic_string();
 
     auto archive = open_archive(hfdat_path);
 
