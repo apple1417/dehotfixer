@@ -1,6 +1,4 @@
 #include "pch.h"
-#include <cstddef>
-#include <stdexcept>
 
 #include "memory.h"
 #include "time_travel.h"
@@ -8,7 +6,7 @@
 using namespace std::chrono_literals;
 using namespace dhf::memory;
 
-namespace dhf::time {
+namespace dhf::time_travel {
 
 namespace {
 
@@ -35,6 +33,7 @@ constant directly. We can then replace the constant to adjust what time we appea
 */
 
 const ue_timespan DEFAULT_OFFSET = 17h;
+ue_timespan stored_offset;
 
 // clang-format off
 const uint8_t SHELLCODE[] = {
@@ -135,6 +134,8 @@ void inject_shellcode(uintptr_t loc, size_t size, int32_t stack_offset) {
 
 }  // namespace
 
+const ue_timespan& time_offset = stored_offset;
+
 void init(void) {
     auto gameplay_globals = sigscan(GAMEPLAY_GLOBALS);
     if (gameplay_globals == 0) {
@@ -172,6 +173,8 @@ void init(void) {
 }
 
 void set_time_offset(ue_timespan offset) {
+    stored_offset = offset;
+
     // We need to negate the requested offset because it's subtracted from the current utc time
     auto ticks = ((-offset) + DEFAULT_OFFSET).count();
 
@@ -184,4 +187,4 @@ void set_time_offset(ue_timespan offset) {
     }
 }
 
-}  // namespace dhf::time
+}  // namespace dhf::time_travel

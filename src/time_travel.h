@@ -3,10 +3,13 @@
 
 #include "pch.h"
 
-namespace dhf::time {
+namespace dhf::time_travel {
 
 // NOLINTNEXTLINE(readability-magic-numbers)
 using ue_timespan = std::chrono::duration<int64_t, std::ratio<1, 10'000'000>>;
+
+/// The current offset being added to all times.
+extern const ue_timespan& time_offset;
 
 /**
  * @brief Injects all code needed for time injection.
@@ -21,6 +24,6 @@ void init(void);
  */
 void set_time_offset(ue_timespan offset);
 
-}  // namespace dhf::time
+}  // namespace dhf::time_travel
 
 #endif /* TIME_TRAVEL_H */

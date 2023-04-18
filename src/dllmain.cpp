@@ -33,7 +33,7 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
 
         if (dhf::settings::is_bl3()) {
             std::cout << "[dhf] Detected BL3, injecting extra hooks\n";
-            dhf::time::init();
+            dhf::time_travel::init();
             dhf::vault_cards::init();
         }
 
