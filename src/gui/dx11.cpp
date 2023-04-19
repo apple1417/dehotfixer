@@ -29,7 +29,7 @@ bool create_main_render_view(IDXGISwapChain* swap_chain) {
     auto ret =
         swap_chain->GetBuffer(0, IID_ID3D11Texture2D, reinterpret_cast<void**>(&back_buffer));
     if (ret != S_OK) {
-        std::cerr << "DX11 hook initalization failed: Couldn't get texture buffer (" << ret
+        std::cerr << "[dhf] DX11 hook initalization failed: Couldn't get texture buffer (" << ret
                   << ")!\n";
         return false;
     }
@@ -39,7 +39,7 @@ bool create_main_render_view(IDXGISwapChain* swap_chain) {
     back_buffer->Release();
 
     if (ret != S_OK) {
-        std::cerr << "DX11 hook initalization failed: Couldn't create render target (" << ret
+        std::cerr << "[dhf] DX11 hook initalization failed: Couldn't create render target (" << ret
                   << ")!\n";
         return false;
     }
@@ -64,14 +64,14 @@ bool ensure_initalized(IDXGISwapChain* swap_chain) {
     DXGI_SWAP_CHAIN_DESC desc;
     auto ret = swap_chain->GetDesc(&desc);
     if (ret != S_OK) {
-        std::cerr << "DX11 hook initalization failed: Couldn't get swap chain descriptor (" << ret
-                  << ")!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: Couldn't get swap chain descriptor ("
+                  << ret << ")!\n";
         return false;
     }
 
     ret = swap_chain->GetDevice(IID_ID3D11Device, reinterpret_cast<void**>(&device));
     if (ret != S_OK) {
-        std::cerr << "DX11 hook initalization failed: Couldn't get device (" << ret << ")!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: Couldn't get device (" << ret << ")!\n";
         return false;
     }
 
@@ -84,18 +84,19 @@ bool ensure_initalized(IDXGISwapChain* swap_chain) {
     }
 
     if (!hook_keys(desc.OutputWindow)) {
-        std::cerr << "DX11 hook initalization failed: Failed to replace winproc (" << ret << ")!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: Failed to replace winproc (" << ret
+                  << ")!\n";
         return false;
     }
 
     ImGui::CreateContext();
 
     if (!ImGui_ImplWin32_Init(desc.OutputWindow)) {
-        std::cerr << "DX11 hook initalization failed: ImGui win32 init failed!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: ImGui win32 init failed!\n";
         return false;
     }
     if (!ImGui_ImplDX11_Init(device, context)) {
-        std::cerr << "DX11 hook initalization failed: ImGui dx11 init failed!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: ImGui dx11 init failed!\n";
         return false;
     }
 

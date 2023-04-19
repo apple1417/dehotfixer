@@ -68,15 +68,15 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
 
     auto ret = swap_chain->GetDevice(IID_ID3D12Device, reinterpret_cast<void**>(&device));
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't get device (" << ret << ")!\n";
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't get device (" << ret << ")!\n";
         return false;
     }
 
     DXGI_SWAP_CHAIN_DESC desc;
     ret = swap_chain->GetDesc(&desc);
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't get swap chain descriptor (" << ret
-                  << ")!\n";
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't get swap chain descriptor ("
+                  << ret << ")!\n";
         return false;
     }
 
@@ -89,8 +89,8 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
     ret = device->CreateDescriptorHeap(&srv_desc, IID_ID3D12DescriptorHeap,
                                        reinterpret_cast<void**>(&srv_heap_desc));
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't get srv heap descriptor (" << ret
-                  << ")!\n";
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't get srv heap descriptor ("
+                  << ret << ")!\n";
         return false;
     }
 
@@ -100,8 +100,8 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
     ret = device->CreateDescriptorHeap(&rtv_desc, IID_ID3D12DescriptorHeap,
                                        reinterpret_cast<void**>(&rtv_heap_desc));
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't get srv heap descriptor (" << ret
-                  << ")!\n";
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't get srv heap descriptor ("
+                  << ret << ")!\n";
         return false;
     }
 
@@ -111,7 +111,7 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
     ret = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_ID3D12CommandAllocator,
                                          reinterpret_cast<void**>(&allocator));
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't get command allocator (" << ret
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't get command allocator (" << ret
                   << ")!\n";
         return false;
     }
@@ -122,7 +122,7 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
                                              IID_ID3D12CommandAllocator,
                                              reinterpret_cast<void**>(&frame.command_allocator));
         if (ret != S_OK) {
-            std::cerr << "DX12 hook initalization failed: Couldn't create command allocator ("
+            std::cerr << "[dhf] DX12 hook initalization failed: Couldn't create command allocator ("
                       << ret << ")!\n";
             return false;
         }
@@ -132,13 +132,14 @@ bool ensure_initalized(IDXGISwapChain3* swap_chain) {
         0, D3D12_COMMAND_LIST_TYPE_DIRECT, framebuffers[0].command_allocator, nullptr,
         IID_ID3D12GraphicsCommandList, reinterpret_cast<void**>(&command_list));
     if (ret != S_OK) {
-        std::cerr << "DX12 hook initalization failed: Couldn't create command list (" << ret
+        std::cerr << "[dhf] DX12 hook initalization failed: Couldn't create command list (" << ret
                   << ")!\n";
         return false;
     }
 
     if (!hook_keys(desc.OutputWindow)) {
-        std::cerr << "DX11 hook initalization failed: Failed to replace winproc (" << ret << ")!\n";
+        std::cerr << "[dhf] DX11 hook initalization failed: Failed to replace winproc (" << ret
+                  << ")!\n";
         return false;
     }
 
