@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "gui/hook.h"
+#include "gui/gui.h"
 #include "hfdat.h"
 #include "settings.h"
 #include "time_travel.h"

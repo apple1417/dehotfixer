@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "gui/gui.h"
+#include "gui/hook.h"
 #include "hfdat.h"
 #include "imgui.h"
 #include "settings.h"
@@ -12,6 +13,8 @@ using namespace std::chrono_literals;
 namespace dhf::gui {
 
 namespace {
+
+bool settings_showing = true;
 
 const constexpr auto NO_HOTFIXES = "No Hotfixes";
 const constexpr auto CURRENT_HOTFIXES = "Current Hotfixes";
@@ -62,13 +65,6 @@ void set_event_time_to_now(void) {
  * @brief Clamps the event time inputs to valid values.
  */
 void clamp_event_time(void) {
-    // TODO: instead on open check if ever applied
-    static bool inital = true;
-    if (inital) {
-        inital = false;
-        set_event_time_to_now();
-    }
-
     // Firstly, clamp individual fields
     event_time.year =
         std::clamp(event_time.year, (int)EARLIEST_MAURICE_DATE.year(), (int)LAST_EVENT_DATE.year());
@@ -223,19 +219,40 @@ void render(void) {
 
     draw_status_window();
 
+    if (!settings_showing) {
+        return;
+    }
+
     ImGui::SetNextWindowSize(
         {0, default_settings_window_height * ImGui::GetTextLineHeightWithSpacing()},
         ImGuiCond_FirstUseEver);
-    if (ImGui::Begin("dehotfixer")) {
-        if (settings::is_bl3()) {
-            draw_vault_card_section();
-            draw_time_travel_section();
-        }
 
-        draw_hotfix_section();
+    ImGui::Begin("dehotfixer (Ctrl+Shift+Ins)", &settings_showing, ImGuiWindowFlags_NoCollapse);
+    if (settings::is_bl3()) {
+        draw_vault_card_section();
+        draw_time_travel_section();
     }
 
+    draw_hotfix_section();
+
     ImGui::End();
+}
+
+void init(void) {
+    hook();
+    set_event_time_to_now();
+}
+
+bool is_showing(void) {
+    return settings_showing;
+}
+
+void toggle_showing(void) {
+    settings_showing = !settings_showing;
+
+    if (settings_showing && time_travel::time_offset == time_travel::ue_timespan::zero()) {
+        set_event_time_to_now();
+    }
 }
 
 }  // namespace dhf::gui

@@ -1,13 +1,15 @@
 #include "pch.h"
-#include <chrono>
 
 #include "gui/dx11.h"
 #include "gui/dx12.h"
+#include "gui/gui.h"
 #include "gui/hook.h"
 
 namespace dhf::gui {
 
 namespace {
+
+const constexpr auto KEY_STATE_DOWN = 0x8000;
 
 WNDPROC window_proc_ptr{};
 
@@ -15,12 +17,20 @@ WNDPROC window_proc_ptr{};
  * @brief `WinProc` hook, used to pass input to imgui.
  */
 LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param) {
-    if (ImGui_ImplWin32_WndProcHandler(h_wnd, u_msg, w_param, l_param) > 0) {
-        return 1;
+    bool capture_mouse = false;
+    bool capture_kb = false;
+
+    if (gui::is_showing()) {
+        if (ImGui_ImplWin32_WndProcHandler(h_wnd, u_msg, w_param, l_param) > 0) {
+            return 1;
+        }
+
+        // NOLINTNEXTLINE(readability-identifier-length)
+        auto io = ImGui::GetIO();
+        capture_mouse = io.WantCaptureMouse;
+        capture_kb = io.WantCaptureKeyboard;
     }
 
-    // NOLINTNEXTLINE(readability-identifier-length)
-    auto io = ImGui::GetIO();
     switch (u_msg) {
         case WM_MOUSELEAVE:
         case WM_NCMOUSELEAVE:
@@ -38,16 +48,22 @@ LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param)
         case WM_XBUTTONUP:
         case WM_MOUSEWHEEL:
         case WM_MOUSEHWHEEL:
-            if (io.WantCaptureMouse) {
+            if (capture_mouse) {
                 return 1;
             }
             break;
-        case WM_KEYDOWN:
         case WM_KEYUP:
+            if (w_param == VK_INSERT && (GetKeyState(VK_CONTROL) & KEY_STATE_DOWN) != 0
+                && (GetKeyState(VK_SHIFT) & KEY_STATE_DOWN) != 0) {
+                gui::toggle_showing();
+                return 1;
+            }
+            [[fallthrough]];
+        case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
         case WM_SYSKEYUP:
         case WM_CHAR:
-            if (io.WantCaptureKeyboard) {
+            if (capture_kb) {
                 return 1;
             }
             break;
@@ -58,7 +74,7 @@ LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param)
 
 }  // namespace
 
-void init(void) {
+void hook(void) {
     // We use `d3d11.dll` as the injector
     // This means `d3d12.dll` might not have been loaded yet (assuming we're using it), which'd
     // cause autodetection to fail.

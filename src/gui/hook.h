@@ -7,7 +7,7 @@ namespace dhf::gui {
  * @brief Hooks the relevant graphics api to inject our gui.
  * @note Includes a short blocking delay, best done last.
  */
-void init(void);
+void hook(void);
 
 /**
  * @brief Sets up the `WinProc` keyboard/mouse hooks.
