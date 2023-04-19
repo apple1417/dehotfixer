@@ -3,6 +3,7 @@
 #include "gui/gui.h"
 #include "gui/hook.h"
 #include "hfdat.h"
+#include "hotfixes/processing.h"
 #include "imgui.h"
 #include "settings.h"
 #include "time_travel.h"
@@ -15,13 +16,6 @@ namespace dhf::gui {
 namespace {
 
 bool settings_showing = true;
-
-const constexpr auto NO_HOTFIXES = "No Hotfixes";
-const constexpr auto CURRENT_HOTFIXES = "Current Hotfixes";
-const constexpr auto NO_HOTFIXES_IDX = -2;
-const constexpr auto CURRENT_HOTFIXES_IDX = -1;
-
-int selected_hotfix_idx = CURRENT_HOTFIXES_IDX;
 
 #pragma region Time Handling
 
@@ -102,6 +96,57 @@ void apply_event_time(void) {
 
 #pragma endregion
 
+#pragma region Hotfix Handling
+
+const constexpr auto NO_HOTFIXES = "No Hotfixes";
+const constexpr auto CURRENT_HOTFIXES = "Current Hotfixes";
+
+// Indexes > 0 refer to actual hotfixes
+// Indexes < 0 count down through this default entries list - `storage_idx = -1 - default_idx`
+const std::vector<std::string> DEFAULT_HOTFIX_LIST_ENTRIES{
+    NO_HOTFIXES,
+    CURRENT_HOTFIXES,
+};
+const constexpr auto NO_HOTFIXES_IDX = -1;
+const constexpr auto CURRENT_HOTFIXES_IDX = -2;
+
+int selected_hotfix_idx = CURRENT_HOTFIXES_IDX;
+
+/**
+ * @brief Get the display name of a hotfix.
+ *
+ * @param full_name The full hotfix name, including ordering chars.
+ * @return A pointer to the display name. Only valid for the life of the full name.
+ */
+const char* get_hotfix_display_name(const std::string& full_name) {
+    auto display_offset = full_name.find_first_of(';');
+    if (display_offset == std::string::npos) {
+        display_offset = 0;
+    } else {
+        display_offset++;
+    }
+
+    return full_name.c_str() + display_offset;
+}
+
+/**
+ * @brief Updates the selected hotfix to the given index.
+ *
+ * @param idx The new index to select.
+ */
+void update_selected_hotfix(int idx) {
+    selected_hotfix_idx = idx;
+
+    auto name = idx < 0 ? DEFAULT_HOTFIX_LIST_ENTRIES[-1 - idx] : hfdat::hotfix_names[idx];
+    auto type = idx == NO_HOTFIXES_IDX ? hfdat::LoadType::NONE
+                                       : (idx == CURRENT_HOTFIXES_IDX ? hfdat::LoadType::CURRENT
+                                                                      : hfdat::LoadType::FILE);
+
+    hfdat::load_new_hotfixes(name, type);
+}
+
+#pragma endregion
+
 /**
  * @brief Draws a window displaying the status of all our edits.
  */
@@ -121,7 +166,7 @@ void draw_status_window(void) {
                      | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
     ImGui::TextColored(ImVec4(1.0, 1.0, 0.0, 1.0), "hash");
-    ImGui::TextDisabled("hotfix name");
+    ImGui::TextDisabled("%s", get_hotfix_display_name(hotfixes::running_hotfix_name));
 
     if (settings::is_bl3()) {
         auto injected_time = std::chrono::system_clock::now() + time_travel::time_offset;
@@ -160,7 +205,7 @@ void draw_time_travel_section(void) {
     clamp_event_time();
 
     ImGui::SameLine();
-    if (ImGui::Button("Apply##time travel")) {
+    if (ImGui::Button("Apply")) {
         apply_event_time();
     }
 
@@ -177,33 +222,53 @@ void draw_time_travel_section(void) {
 void draw_hotfix_section(void) {
     ImGui::SeparatorText("Hotfixes");
 
-    ImGui::Button("Apply##hotfix");  // TODO
+    static int highlighted_hotfix_idx = selected_hotfix_idx;
+
+    if (ImGui::Button("Update Selection")) {
+        update_selected_hotfix(highlighted_hotfix_idx);
+    }
 
     // Right align
     ImGui::SameLine(ImGui::GetWindowSize().x - ImGui::CalcTextSize(hfdat::hfdat_name.c_str()).x
                     - ImGui::GetStyle().ItemSpacing.x);
     ImGui::TextDisabled("%s", hfdat::hfdat_name.c_str());
 
-    if (ImGui::BeginListBox("##hotfixlist", ImVec2(-FLT_MIN, -FLT_MIN))) {
-        if (ImGui::Selectable(NO_HOTFIXES, selected_hotfix_idx == NO_HOTFIXES_IDX)) {
-            selected_hotfix_idx = NO_HOTFIXES_IDX;
-        }
-        if (ImGui::Selectable(CURRENT_HOTFIXES, selected_hotfix_idx == CURRENT_HOTFIXES_IDX)) {
-            selected_hotfix_idx = CURRENT_HOTFIXES_IDX;
+    ImGui::Text("%s", get_hotfix_display_name(hfdat::loaded_hotfixes_name));
+
+    static ImGuiTextFilter filter;
+    ImGui::AlignTextToFramePadding();
+    ImGui::Text("Filter");
+    ImGui::SameLine();
+    filter.Draw("##filter", -FLT_MIN);
+
+    if (ImGui::BeginListBox("##hotfixlist", {-FLT_MIN, -FLT_MIN})) {
+        bool double_click = false;
+
+        for (auto i = 0; (size_t)i < DEFAULT_HOTFIX_LIST_ENTRIES.size(); i++) {
+            auto name = get_hotfix_display_name(DEFAULT_HOTFIX_LIST_ENTRIES[i]);
+            auto storage_idx = -1 - i;
+            if (filter.PassFilter(name)) {
+                if (ImGui::Selectable(name, highlighted_hotfix_idx == storage_idx,
+                                      ImGuiSelectableFlags_AllowDoubleClick)) {
+                    highlighted_hotfix_idx = storage_idx;
+                    double_click = ImGui::IsMouseDoubleClicked(0);
+                }
+            }
         }
 
         for (auto i = 0; (size_t)i < hfdat::hotfix_names.size(); i++) {
-            auto& hotfix = hfdat::hotfix_names[i];
-            auto display_offset = hotfix.find_first_of(';');
-            if (display_offset == std::string::npos) {
-                display_offset = 0;
-            } else {
-                display_offset++;
+            auto name = get_hotfix_display_name(hfdat::hotfix_names[i]);
+            if (filter.PassFilter(name)) {
+                if (ImGui::Selectable(name, highlighted_hotfix_idx == i,
+                                      ImGuiSelectableFlags_AllowDoubleClick)) {
+                    highlighted_hotfix_idx = i;
+                    double_click = ImGui::IsMouseDoubleClicked(0);
+                }
             }
+        }
 
-            if (ImGui::Selectable(hotfix.c_str() + display_offset, selected_hotfix_idx == i)) {
-                selected_hotfix_idx = i;
-            }
+        if (double_click) {
+            update_selected_hotfix(highlighted_hotfix_idx);
         }
 
         ImGui::EndListBox();

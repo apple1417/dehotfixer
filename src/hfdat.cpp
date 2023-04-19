@@ -11,10 +11,16 @@ namespace {
 
 const constexpr auto ARCHIVE_BLOCK_SIZE = 0x4000;
 
+const constexpr auto NO_LOADED_FILE = "n/a";
+
 std::filesystem::path hfdat_path;
 
 std::vector<std::string> hotfix_names_internal;
-std::string hfdat_name_internal;
+std::string hfdat_name_internal = NO_LOADED_FILE;
+
+bool use_current_hotfixes_internal = false;
+std::vector<Hotfix> hotfixes_internal;
+std::string loaded_hotfixes_name_internal = NO_LOADED_FILE;
 
 /**
  * @brief Opens an archive at the given path.
@@ -42,6 +48,9 @@ std::shared_ptr<archive> open_archive(const std::filesystem::path& path) {
 
 const std::vector<std::string>& hotfix_names = hotfix_names_internal;
 const std::string& hfdat_name = hfdat_name_internal;
+const bool& use_current_hotfixes = use_current_hotfixes_internal;
+const std::vector<Hotfix>& hotfixes = hotfixes_internal;
+const std::string& loaded_hotfixes_name = loaded_hotfixes_name_internal;
 
 void init(void) {
     for (const auto& dir_entry :
@@ -54,7 +63,6 @@ void init(void) {
     }
 
     if (!std::filesystem::exists(hfdat_path)) {
-        hfdat_name_internal = "n/a";
         return;
     }
     hfdat_name_internal = hfdat_path.filename().generic_string();
@@ -65,6 +73,23 @@ void init(void) {
     while (archive_read_next_header(archive.get(), &entry) == ARCHIVE_OK) {
         hotfix_names_internal.emplace_back(archive_entry_pathname_utf8(entry));
     }
+}
+
+void load_new_hotfixes(const std::string& name, LoadType type) {
+    loaded_hotfixes_name_internal = name;
+    hotfixes_internal.clear();
+    use_current_hotfixes_internal = false;
+
+    if (type == LoadType::NONE) {
+        hotfixes_internal.clear();
+        return;
+    }
+    if (type == LoadType::CURRENT) {
+        use_current_hotfixes_internal = true;
+        return;
+    }
+
+    // TODO
 }
 
 }  // namespace dhf::hfdat

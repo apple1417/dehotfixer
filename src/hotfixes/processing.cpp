@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "hfdat.h"
 #include "hotfixes/hooks.h"
 #include "hotfixes/processing.h"
 #include "hotfixes/unreal.h"
@@ -9,6 +10,9 @@
 namespace dhf::hotfixes {
 
 namespace {
+
+std::string running_hotfix_name_internal = "n/a";
+size_t running_hotfix_hash_internal = 0;
 
 const constexpr auto BL3_NEWS_FRAME = L"oakasset.frame.patchNote";
 const constexpr auto WL_NEWS_FRAME = L"asset.nexus.HotFix";
@@ -210,10 +214,8 @@ std::wstring get_current_time_str(void) {
 
 }  // namespace
 
-struct Hotfix {
-    std::wstring key;
-    std::wstring value;
-};
+const std::string& running_hotfix_name = running_hotfix_name_internal;
+const size_t& running_hotfix_hash = running_hotfix_hash_internal;
 
 void handle_discovery_from_json(FJsonObject** json) {
     gather_vf_tables(*json);
@@ -238,25 +240,30 @@ void handle_discovery_from_json(FJsonObject** json) {
         throw std::runtime_error("Didn't find vf tables in time!");
     }
 
-    std::vector<Hotfix> hotfixes{};
+    running_hotfix_name_internal = hfdat::loaded_hotfixes_name;
 
-    auto params = micropatch->get<FJsonValueArray>(L"parameters");
-    params->entries.count = (uint32_t)hotfixes.size();
-    if (params->entries.count > params->entries.max) {
-        params->entries.max = params->entries.count;
-        params->entries.data = u_realloc<TSharedPtr<FJsonValue>>(
-            params->entries.data, params->entries.max * sizeof(TSharedPtr<FJsonValue>));
+    if (!hfdat::use_current_hotfixes) {
+        auto params = micropatch->get<FJsonValueArray>(L"parameters");
+        params->entries.count = (uint32_t)hfdat::hotfixes.size();
+        if (params->entries.count > params->entries.max) {
+            params->entries.max = params->entries.count;
+            params->entries.data = u_realloc<TSharedPtr<FJsonValue>>(
+                params->entries.data, params->entries.max * sizeof(TSharedPtr<FJsonValue>));
+        }
+
+        for (size_t i = 0; i < hfdat::hotfixes.size(); i++) {
+            const auto& [key, value] = hfdat::hotfixes[i];
+
+            auto hotfix_entry = create_json_object<2>(
+                {{{L"key", create_json_string(key)}, {L"value", create_json_string(value)}}});
+
+            params->entries.data[i].obj = create_json_value_object(hotfix_entry);
+            add_ref_controller(&params->entries.data[i], vf_table.shared_ptr_json_value);
+        }
     }
 
-    for (size_t i = 0; i < hotfixes.size(); i++) {
-        const auto& [key, value] = hotfixes[i];
-
-        auto hotfix_entry = create_json_object<2>(
-            {{{L"key", create_json_string(key)}, {L"value", create_json_string(value)}}});
-
-        params->entries.data[i].obj = create_json_value_object(hotfix_entry);
-        add_ref_controller(&params->entries.data[i], vf_table.shared_ptr_json_value);
-    }
+    // TODO
+    running_hotfix_hash_internal = 0;
 }
 
 void handle_news_from_json(FJsonObject** json) {

@@ -5,6 +5,9 @@ namespace dhf::hotfixes {
 
 struct FJsonObject;
 
+extern const std::string& running_hotfix_name;
+extern const size_t& running_hotfix_hash;
+
 /**
  * @brief Handles `GbxSparkSdk::Discovery::Services::FromJson` calls, inserting our custom hotfixes.
  *
