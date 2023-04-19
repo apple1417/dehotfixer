@@ -2,6 +2,7 @@
 
 #include "gui/gui.h"
 #include "hfdat.h"
+#include "hotfixes/hooks.h"
 #include "settings.h"
 #include "time_travel.h"
 #include "vault_cards.h"
@@ -29,6 +30,7 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
     }
 
     try {
+        dhf::hotfixes::init();
         dhf::hfdat::init();
 
         if (dhf::settings::is_bl3()) {
@@ -42,7 +44,7 @@ DWORD WINAPI startup_thread(LPVOID /*unused*/) {
         std::cerr << "[dhf] Exception occured during initalization: " << ex.what() << "\n";
     }
 
-    std::cout << "[dhf] Dehotfixer " VERSION_STRING " loaded\n";
+    std::cout << "[dhf] " FULL_PROJECT_NAME " loaded\n";
 
     return 1;
 }
