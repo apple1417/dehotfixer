@@ -369,9 +369,8 @@ void draw_hotfix_section(void) {
 }  // namespace
 
 void render(void) {
-    const constexpr auto default_settings_window_height = 30;
-
-    ImGui::ShowDemoWindow();
+    const constexpr auto default_settings_window_height_lines = 30;
+    const constexpr auto default_settings_window_width = 320;
 
     draw_status_window();
 
@@ -380,7 +379,8 @@ void render(void) {
     }
 
     ImGui::SetNextWindowSize(
-        {0, default_settings_window_height * ImGui::GetTextLineHeightWithSpacing()},
+        {default_settings_window_width,
+         default_settings_window_height_lines * ImGui::GetTextLineHeightWithSpacing()},
         ImGuiCond_FirstUseEver);
 
     ImGui::Begin("dehotfixer (Ctrl+Shift+Ins)", &settings_showing, ImGuiWindowFlags_NoCollapse);
