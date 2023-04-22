@@ -147,6 +147,82 @@ void update_selected_hotfix(int idx) {
 
 #pragma endregion
 
+#pragma region Status
+
+/**
+ * @brief Creates an ImGui colour vector from it's hex value.
+ * @note Returns with full alpha.
+ *
+ * @param hex A 24-bit rgb value.
+ * @return The corrosponding colour vector.
+ */
+consteval ImVec4 colour_from_hex(uint32_t hex) {
+    // NOLINTBEGIN(readability-identifier-length, readability-magic-numbers)
+    auto r = (hex >> 16) & 0xFF;
+    auto g = (hex >> 8) & 0xFF;
+    auto b = (hex >> 0) & 0xFF;
+    return {static_cast<float>(r / 255.0), static_cast<float>(g / 255.0),
+            static_cast<float>(b / 255.0), 1.0};
+    // NOLINTEND(readability-identifier-length, readability-magic-numbers)
+}
+
+const constexpr ImVec4 ALL_COLOURS[] = {
+    colour_from_hex(0xe6194b), colour_from_hex(0xf58231), colour_from_hex(0xffe119),
+    colour_from_hex(0x3cb44b), colour_from_hex(0x42d4f4), colour_from_hex(0x4363d8),
+    colour_from_hex(0xf032e6), colour_from_hex(0xffffff),
+};
+
+const constexpr auto B64_ALPHABET =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+/**
+ * @brief Base64 encodes a block of data.
+ *
+ * @param data The data to encode.
+ * @param len The length of the data to encode.
+ * @return The base64-encoded data
+ */
+std::string b64_encode(const uint8_t* data, size_t len) {
+    std::stringstream encoded;
+    /*
+    01001101 01100001 01101110
+    TTTTTTWW WWWWFFFF FFuuuuuu
+    */
+    size_t idx = 0;
+    for (; idx < (len - 2); idx += 3) {
+        // NOLINTBEGIN(readability-magic-numbers)
+        // clang-format off
+        encoded << B64_ALPHABET[                                ((data[idx + 0] & 0xFC) >> 2)];
+        encoded << B64_ALPHABET[((data[idx + 0] & 0x03) << 4) | ((data[idx + 1] & 0xF0) >> 4)];
+        encoded << B64_ALPHABET[((data[idx + 1] & 0x0F) << 2) | ((data[idx + 2] & 0xC0) >> 6)];
+        encoded << B64_ALPHABET[((data[idx + 2] & 0x3F) << 0)                                ];
+        // clang-format on
+        // NOLINTEND(readability-magic-numbers)
+    }
+
+    if (idx == (len - 1)) {
+        // NOLINTBEGIN(readability-magic-numbers)
+        // clang-format off
+        encoded << B64_ALPHABET[                                ((data[idx + 0] & 0xFC) >> 2)];
+        encoded << B64_ALPHABET[((data[idx + 0] & 0x03) << 4)                                ];
+        encoded << '=';
+        encoded << '=';
+        // clang-format on
+        // NOLINTEND(readability-magic-numbers)
+    } else if (idx == (len - 2)) {
+        // NOLINTBEGIN(readability-magic-numbers)
+        // clang-format off
+        encoded << B64_ALPHABET[                                ((data[idx + 0] & 0xFC) >> 2)];
+        encoded << B64_ALPHABET[((data[idx + 0] & 0x03) << 4) | ((data[idx + 1] & 0xF0) >> 4)];
+        encoded << B64_ALPHABET[((data[idx + 1] & 0x0F) << 2)                                ];
+        encoded << '=';
+        // clang-format on
+        // NOLINTEND(readability-magic-numbers)
+    }
+
+    return encoded.str();
+}
+
 /**
  * @brief Draws a window displaying the status of all our edits.
  */
@@ -165,7 +241,20 @@ void draw_status_window(void) {
                      | ImGuiWindowFlags_NoFocusOnAppearing
                      | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-    ImGui::TextColored(ImVec4(1.0, 1.0, 0.0, 1.0), "hash");
+    // Cache the last hotfix hash, primarily so that we can have it display as n/a until the game's
+    // loaded them for the first time
+    // The performance benefit is a nice side effect
+    static std::string hotfix_hash = "n/a";
+    static uint64_t last_hotfix_hash = 0;
+    if (hotfixes::running_hotfix_hash != last_hotfix_hash) {
+        hotfix_hash = b64_encode(reinterpret_cast<const uint8_t*>(&hotfixes::running_hotfix_hash),
+                                 sizeof(hotfixes::running_hotfix_hash));
+    }
+
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+    auto& hotfix_colour = ALL_COLOURS[hotfixes::running_hotfix_hash % IM_ARRAYSIZE(ALL_COLOURS)];
+
+    ImGui::TextColored(hotfix_colour, "%s", hotfix_hash.c_str());
     ImGui::TextDisabled("%s", get_hotfix_display_name(hotfixes::running_hotfix_name));
 
     if (settings::is_bl3()) {
@@ -178,6 +267,8 @@ void draw_status_window(void) {
     ImGui::End();
     ImGui::PopStyleVar(2);
 }
+
+#pragma endregion
 
 /**
  * @brief Draws a section of a window holding all the settings to do with vault cards.

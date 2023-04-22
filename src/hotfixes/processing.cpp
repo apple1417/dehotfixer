@@ -11,11 +11,14 @@ namespace dhf::hotfixes {
 
 namespace {
 
-std::string running_hotfix_name_internal = "n/a";
-size_t running_hotfix_hash_internal = 0;
-
 const constexpr auto BL3_NEWS_FRAME = L"oakasset.frame.patchNote";
 const constexpr auto WL_NEWS_FRAME = L"asset.nexus.HotFix";
+
+const constexpr uint64_t FNV_BASIS = 0xcbf29ce484222325;
+const constexpr uint64_t FNV_PRIME = 0x100000001b3;
+
+std::string running_hotfix_name_internal = "n/a";
+uint64_t running_hotfix_hash_internal = 0;
 
 /**
  * @brief Struct holding all the vf tables we need to grab copies of.
@@ -212,10 +215,30 @@ std::wstring get_current_time_str(void) {
     return std::format(L"{:%FT%TZ}", now);
 }
 
+/**
+ * @brief Resets the running hotfix hash.
+ */
+void hash_reset(void) {
+    running_hotfix_hash_internal = FNV_BASIS;
+}
+
+/**
+ * @brief Advances the running hotfix hash over a range of bytes.
+ *
+ * @param data The start of the data.
+ * @param len The length of data.
+ */
+void hash_advance(const uint8_t* data, size_t len) {
+    for (size_t i = 0; i < len; i++) {
+        running_hotfix_hash_internal ^= data[i];
+        running_hotfix_hash_internal *= FNV_PRIME;
+    }
+}
+
 }  // namespace
 
 const std::string& running_hotfix_name = running_hotfix_name_internal;
-const size_t& running_hotfix_hash = running_hotfix_hash_internal;
+const uint64_t& running_hotfix_hash = running_hotfix_hash_internal;
 
 void handle_discovery_from_json(FJsonObject** json) {
     gather_vf_tables(*json);
@@ -240,10 +263,10 @@ void handle_discovery_from_json(FJsonObject** json) {
         throw std::runtime_error("Didn't find vf tables in time!");
     }
 
-    running_hotfix_name_internal = hfdat::loaded_hotfixes_name;
+    auto params = micropatch->get<FJsonValueArray>(L"parameters");
 
+    running_hotfix_name_internal = hfdat::loaded_hotfixes_name;
     if (!hfdat::use_current_hotfixes) {
-        auto params = micropatch->get<FJsonValueArray>(L"parameters");
         params->entries.count = (uint32_t)hfdat::hotfixes.size();
         if (params->entries.count > params->entries.max) {
             params->entries.max = params->entries.count;
@@ -262,8 +285,19 @@ void handle_discovery_from_json(FJsonObject** json) {
         }
     }
 
-    // TODO
-    running_hotfix_hash_internal = 0;
+    hash_reset();
+
+    // This includes the version number, so will change all the hashes in an update
+    hash_advance(reinterpret_cast<const uint8_t*>(FULL_PROJECT_NAME), sizeof(FULL_PROJECT_NAME));
+
+    for (uint32_t i = 0; i < params->count(); i++) {
+        auto entry = params->get<FJsonValueObject>(i)->to_obj();
+        auto key = entry->get<FJsonValueString>(L"key")->str;
+        auto value = entry->get<FJsonValueString>(L"value")->str;
+
+        hash_advance(reinterpret_cast<const uint8_t*>(key.data), key.count * sizeof(wchar_t));
+        hash_advance(reinterpret_cast<const uint8_t*>(value.data), value.count * sizeof(wchar_t));
+    }
 }
 
 void handle_news_from_json(FJsonObject** json) {
