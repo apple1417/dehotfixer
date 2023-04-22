@@ -166,7 +166,11 @@ HRESULT present_hook(IDXGISwapChain3* self, UINT sync_interval, UINT flags) {
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        render();
+        try {
+            render();
+        } catch (const std::exception& ex) {
+            std::cerr << "[dhf] Exception occured during render loop: " << ex.what();
+        }
 
         ImGui::EndFrame();
 

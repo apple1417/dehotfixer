@@ -43,7 +43,7 @@ class HotfixInfo:
     def __post_init__(self) -> None:
         self.friendly_name = get_friendly_name(self.path)
 
-    def compress(self, encoding: str = "utf8") -> io.BytesIO:
+    def compress(self) -> io.BytesIO:
         binary = io.BytesIO()
 
         with self.path.open() as file:
@@ -52,9 +52,16 @@ class HotfixInfo:
             binary.write(struct.pack("<I", len(params)))
 
             for hf in params:
-                line = hf["key"] + "\0" + hf["value"] + "\0"
                 # Explicitly saying le removes the BOM
-                binary.write(line.encode("utf-16le"))
+                key_bites = hf["key"].encode("utf-16le")
+                value_bites = hf["value"].encode("utf-16le")
+
+                binary.write(
+                    struct.pack("<I", len(key_bites) // 2)
+                    + key_bites
+                    + struct.pack("<I", len(value_bites) // 2)
+                    + value_bites
+                )
 
         return binary
 

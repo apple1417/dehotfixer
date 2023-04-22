@@ -306,6 +306,7 @@ void render(void) {
 void init(void) {
     hook();
     set_event_time_to_now();
+    update_selected_hotfix(CURRENT_HOTFIXES_IDX);
 }
 
 bool is_showing(void) {

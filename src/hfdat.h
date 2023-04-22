@@ -5,11 +5,6 @@
 
 namespace dhf::hfdat {
 
-struct Hotfix {
-    std::wstring key;
-    std::wstring value;
-};
-
 /// A list of all the loaded hotfix file names (including ordering chars).
 extern const std::vector<std::string>& hotfix_names;
 
@@ -20,7 +15,7 @@ extern const std::string& hfdat_name;
 extern const bool& use_current_hotfixes;
 
 /// The custom hotfixes to load
-extern const std::vector<Hotfix>& hotfixes;
+extern const std::vector<std::pair<std::wstring, std::wstring>>& hotfixes;
 
 /// The name of the currently loaded hotfixes
 extern const std::string& loaded_hotfixes_name;
