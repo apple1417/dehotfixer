@@ -35,6 +35,10 @@ std::tuple<uintptr_t, size_t> get_exe_range(void) {
     auto module_length = nt_header->OptionalHeader.SizeOfImage;
 
     range = {reinterpret_cast<uintptr_t>(allocation_base), module_length};
+
+    std::cout << "[dhf] Exe module address: " << std::hex << allocation_base << "\n";
+    std::cout << "[dhf] Exe module size: " << std::hex << module_length << "\n";
+
     return *range;
 }
 

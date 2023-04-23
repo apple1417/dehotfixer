@@ -65,6 +65,9 @@ if(MSVC)
     target_compile_options(dehotfixer PUBLIC "$<$<CONFIG:DEBUG>:/ZI>")
     target_link_options(dehotfixer PUBLIC "/INCREMENTAL")
 
+    # Always generate a pdb
+    target_link_options(dehotfixer PUBLIC "/Debug")
+
     # UTF-8 encoded source files
     target_compile_options(dehotfixer PUBLIC "/utf-8")
 endif()

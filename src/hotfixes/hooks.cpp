@@ -4,7 +4,6 @@
 #include "hotfixes/unreal.h"
 #include "memory.h"
 
-
 using namespace dhf::memory;
 
 namespace dhf::hotfixes {
@@ -93,7 +92,7 @@ bool discovery_from_json_hook(void* this_service, FJsonObject** json) {
     try {
         handle_discovery_from_json(json);
     } catch (std::exception& ex) {
-        std::cerr << "[dhf] Exception occured in discovery hook: " << ex.what();
+        std::cerr << "[dhf] Exception occured in discovery hook: " << ex.what() << "\n";
     }
 
     return original_discovery_from_json_ptr(this_service, json);
@@ -121,7 +120,7 @@ bool news_from_json_hook(void* this_service, FJsonObject** json) {
     try {
         handle_news_from_json(json);
     } catch (std::exception& ex) {
-        std::cerr << "[dhf] Exception occured in discovery hook: " << ex.what();
+        std::cerr << "[dhf] Exception occured in discovery hook: " << ex.what() << "\n";
     }
 
     return original_news_from_json_ptr(this_service, json);

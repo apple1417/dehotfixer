@@ -163,8 +163,8 @@ void load_new_hotfixes(const std::string& name, LoadType type) {
 
         loaded_hotfixes_name_internal = name;
     } catch (const std::exception& ex) {
-        std::cerr << "[dhf] Failed to read hotfix file '" << name
-                  << "' from archive: " << ex.what();
+        std::cerr << "[dhf] Failed to read hotfix file '" << name << "' from archive: " << ex.what()
+                  << "\n";
     }
 }
 
