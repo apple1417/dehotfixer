@@ -19,6 +19,8 @@ ID3D11DeviceContext* context{};
 ID3D11Device* device{};
 ID3D11RenderTargetView* main_render_view = nullptr;
 
+bool initalized = false;
+
 /**
  * @brief Creates the main render view.
  *
@@ -55,7 +57,6 @@ bool create_main_render_view(IDXGISwapChain* swap_chain) {
  * @return True if the hook was successfully initalized, false otherwise.
  */
 bool ensure_initalized(IDXGISwapChain* swap_chain) {
-    static bool initalized = false;
     static bool run_once = false;
     if (run_once) {
         return initalized;
@@ -150,26 +151,30 @@ HRESULT resize_buffers_hook(IDXGISwapChain* self,
                             UINT height,
                             DXGI_FORMAT new_format,
                             UINT swap_chain_flags) {
-    if (main_render_view != nullptr) {
-        context->OMSetRenderTargets(0, nullptr, nullptr);
-        main_render_view->Release();
-    }
+    if (initalized) {
+        if (main_render_view != nullptr) {
+            context->OMSetRenderTargets(0, nullptr, nullptr);
+            main_render_view->Release();
+        }
 
-    ImGui_ImplDX11_InvalidateDeviceObjects();
+        ImGui_ImplDX11_InvalidateDeviceObjects();
+    }
 
     auto ret = resize_buffers_ptr(self, buffer_count, width, height, new_format, swap_chain_flags);
 
-    create_main_render_view(self);
-    context->OMSetRenderTargets(1, &main_render_view, nullptr);
+    if (initalized) {
+        create_main_render_view(self);
+        context->OMSetRenderTargets(1, &main_render_view, nullptr);
 
-    D3D11_VIEWPORT view;
-    view.Width = (float)width;
-    view.Height = (float)height;
-    view.MinDepth = 0.0;
-    view.MaxDepth = 1.0;
-    view.TopLeftX = 0;
-    view.TopLeftY = 0;
-    context->RSSetViewports(1, &view);
+        D3D11_VIEWPORT view;
+        view.Width = (float)width;
+        view.Height = (float)height;
+        view.MinDepth = 0.0;
+        view.MaxDepth = 1.0;
+        view.TopLeftX = 0;
+        view.TopLeftY = 0;
+        context->RSSetViewports(1, &view);
+    }
 
     return ret;
 }

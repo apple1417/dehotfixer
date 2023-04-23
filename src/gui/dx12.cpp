@@ -31,6 +31,8 @@ ID3D12DescriptorHeap* srv_heap_desc{};
 ID3D12DescriptorHeap* rtv_heap_desc{};
 ID3D12GraphicsCommandList* command_list{};
 
+bool initalized = false;
+
 /**
  * @brief Creates the render resource objects for all frame buffers.
  *
@@ -61,7 +63,6 @@ void create_render_resources(IDXGISwapChain* swap_chain) {
  * @return True if the hook has been successfully initalized.
  */
 bool ensure_initalized(IDXGISwapChain3* swap_chain) {
-    static bool initalized = false;
     static bool run_once = false;
     if (run_once) {
         return initalized;
@@ -244,15 +245,19 @@ HRESULT resize_buffers_hook(IDXGISwapChain* self,
                             UINT height,
                             DXGI_FORMAT new_format,
                             UINT swap_chain_flags) {
-    for (auto& frame : framebuffers) {
-        frame.main_render_target_resource->Release();
-    }
+    if (initalized) {
+        for (auto& frame : framebuffers) {
+            frame.main_render_target_resource->Release();
+        }
 
-    ImGui_ImplDX12_InvalidateDeviceObjects();
+        ImGui_ImplDX12_InvalidateDeviceObjects();
+    }
 
     auto ret = resize_buffers_ptr(self, buffer_count, width, height, new_format, swap_chain_flags);
 
-    create_render_resources(self);
+    if (initalized) {
+        create_render_resources(self);
+    }
 
     return ret;
 }
