@@ -257,7 +257,7 @@ void draw_status_window(void) {
     ImGui::TextColored(hotfix_colour, "%s", hotfix_hash.c_str());
     ImGui::TextDisabled("%s", get_hotfix_display_name(hotfixes::running_hotfix_name));
 
-    if (settings::is_bl3()) {
+    if (settings::is_bl3) {
         auto injected_time = std::chrono::system_clock::now() + time_travel::time_offset;
         ImGui::TextDisabled("%s", std::format("{:%F %R}", injected_time).c_str());
     }
@@ -384,7 +384,7 @@ void render(void) {
         ImGuiCond_FirstUseEver);
 
     ImGui::Begin("dehotfixer (Ctrl+Shift+Ins)", &settings_showing, ImGuiWindowFlags_NoCollapse);
-    if (settings::is_bl3()) {
+    if (settings::is_bl3) {
         draw_vault_card_section();
         draw_time_travel_section();
     }

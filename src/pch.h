@@ -5,9 +5,7 @@
 #define NOMINMAX
 #include <Windows.h>
 
-#include <d3d11.h>
-#include <d3d12.h>
-#include <dxgi1_4.h>
+#include <TlHelp32.h>
 
 #include <MinHook.h>
 
@@ -58,6 +56,14 @@ using std::uint32_t;
 using std::uint64_t;
 using std::uint8_t;
 
+#endif
+
+#if defined(_MSC_VER)
+#define DLL_EXPORT extern "C" __declspec(dllexport)
+#elif defined(__clang__)
+#define DLL_EXPORT extern "C" [[gnu::dllexport]]
+#else
+#error Unknown DLL export attribute
 #endif
 
 #endif /* PCH_H */

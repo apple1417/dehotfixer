@@ -1,5 +1,10 @@
 #include "pch.h"
 
+// Can't put these in the pch since it includes some dx11 stuff, which we overload some of when we
+// act as a proxy dll
+#include <d3d12.h>
+#include <dxgi1_4.h>
+
 #include "gui/dx12.h"
 #include "gui/gui.h"
 #include "gui/hook.h"

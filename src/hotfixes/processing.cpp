@@ -321,7 +321,7 @@ void handle_news_from_json(FJsonObject** json) {
         create_json_object<1>({{{L"tag", create_json_string(L"disc_img_game_sm")}}});
     auto image_tags_obj = create_json_object<2>(
         {{{L"meta_tag", create_json_value_object(image_meta_tag_obj)},
-          {L"value", create_json_string(settings::is_bl3() ? BL3_NEWS_FRAME : WL_NEWS_FRAME)}}});
+          {L"value", create_json_string(settings::is_bl3 ? BL3_NEWS_FRAME : WL_NEWS_FRAME)}}});
 
     auto tags_arr = create_json_array<1>({{create_json_value_object(image_tags_obj)}});
 
