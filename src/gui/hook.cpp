@@ -32,22 +32,20 @@ LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param)
     }
 
     switch (u_msg) {
-        case WM_MOUSELEAVE:
-        case WM_NCMOUSELEAVE:
-        case WM_LBUTTONDOWN:
         case WM_LBUTTONDBLCLK:
-        case WM_RBUTTONDOWN:
-        case WM_RBUTTONDBLCLK:
-        case WM_MBUTTONDOWN:
-        case WM_MBUTTONDBLCLK:
-        case WM_XBUTTONDOWN:
-        case WM_XBUTTONDBLCLK:
+        case WM_LBUTTONDOWN:
         case WM_LBUTTONUP:
-        case WM_RBUTTONUP:
+        case WM_MBUTTONDBLCLK:
+        case WM_MBUTTONDOWN:
         case WM_MBUTTONUP:
-        case WM_XBUTTONUP:
-        case WM_MOUSEWHEEL:
         case WM_MOUSEHWHEEL:
+        case WM_MOUSEWHEEL:
+        case WM_RBUTTONDBLCLK:
+        case WM_RBUTTONDOWN:
+        case WM_RBUTTONUP:
+        case WM_XBUTTONDBLCLK:
+        case WM_XBUTTONDOWN:
+        case WM_XBUTTONUP:
             if (capture_mouse) {
                 return 1;
             }
@@ -59,10 +57,10 @@ LRESULT window_proc_hook(HWND h_wnd, UINT u_msg, WPARAM w_param, LPARAM l_param)
                 return 1;
             }
             [[fallthrough]];
+        case WM_CHAR:
         case WM_KEYDOWN:
         case WM_SYSKEYDOWN:
         case WM_SYSKEYUP:
-        case WM_CHAR:
             if (capture_kb) {
                 return 1;
             }
