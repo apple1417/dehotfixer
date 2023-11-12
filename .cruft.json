@@ -1,0 +1,22 @@
+{
+  "template": "https://github.com/bl-sdk/common_dotfiles.git",
+  "commit": "a66f9767ed477bfa89d6ca505392d226ebdd4275",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "_jinja2_env_vars": {
+        "lstrip_blocks": true,
+        "trim_blocks": true
+      },
+      "_extensions": [
+        "cookiecutter.extensions.SlugifyExtension"
+      ],
+      "project_name": "dehotfixer",
+      "__project_slug": "dehotfixer",
+      "include_cpp": true,
+      "include_py": false,
+      "_template": "https://github.com/bl-sdk/common_dotfiles.git"
+    }
+  },
+  "directory": null
+}

@@ -1,8 +1,13 @@
 .vs
 .vscode
+
+# C/C++ excludes
+.cache/clangd
+.gdbinit
 out
 
 # User scripts with templates
+postbuild
 postbuild.bat
 
 # CMake (from https://github.com/github/gitignore/blob/main/CMake.gitignore)

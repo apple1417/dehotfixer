@@ -10,3 +10,6 @@
 [submodule "libs/libarchive"]
 	path = libs/libarchive
 	url = https://github.com/libarchive/libarchive.git
+[submodule "common_cmake"]
+	path = common_cmake
+	url = https://github.com/bl-sdk/common_cmake.git
