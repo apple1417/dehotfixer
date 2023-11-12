@@ -9,7 +9,7 @@ set(CMAKE_POLICY_DEFAULT_CMP0048 NEW)
 
 # zlib sets a min version so old it throws a deprecation warning, disable it
 set(CMAKE_WARN_DEPRECATED CACHE BOOL OFF)
-add_subdirectory(libs/zlib "${CMAKE_CURRENT_BINARY_DIR}/zlib_build")
+add_subdirectory(libs/zlib "${CMAKE_CURRENT_BINARY_DIR}/zlib_build" EXCLUDE_FROM_ALL)
 set(CMAKE_WARN_DEPRECATED CACHE BOOL ON)
 
 # Disable extra useless targets
@@ -70,7 +70,7 @@ set(ENABLE_ZLIB CACHE BOOL OFF)
 set(HAVE_LIBZ 1)
 set(HAVE_ZLIB_H 1)
 
-add_subdirectory(libs/libarchive)
+add_subdirectory(libs/libarchive EXCLUDE_FROM_ALL)
 
 set_target_properties(
     archive

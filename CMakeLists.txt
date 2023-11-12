@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.24)
+﻿cmake_minimum_required(VERSION 3.24)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
-project(dehotfixer VERSION 1.1)
+project(dehotfixer VERSION 1.2)
 add_library(dehotfixer SHARED)
 set_target_properties(dehotfixer PROPERTIES
     EXPORT_COMPILE_COMMANDS True
@@ -18,7 +18,10 @@ else()
     target_compile_options(dehotfixer PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-add_subdirectory(libs/minhook)
+add_subdirectory(libs/minhook EXCLUDE_FROM_ALL)
+
+add_subdirectory(libs/pluginloader EXCLUDE_FROM_ALL)
+set_target_properties(pluginloader_xinput1_3 PROPERTIES EXCLUDE_FROM_ALL 0)
 
 include(cmake/libarchive_hack.cmake)
 
@@ -60,7 +63,14 @@ target_precompile_headers(dehotfixer PUBLIC "src/pch.h")
 
 install(
     TARGETS
-        dehotfixer
+        pluginloader_xinput1_3
     RUNTIME DESTINATION
         .
+)
+
+install(
+    TARGETS
+        dehotfixer
+    RUNTIME DESTINATION
+        Plugins
 )

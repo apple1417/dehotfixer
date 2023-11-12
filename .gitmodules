@@ -10,6 +10,9 @@
 [submodule "libs/libarchive"]
 	path = libs/libarchive
 	url = https://github.com/libarchive/libarchive.git
+[submodule "libs/pluginloader"]
+	path = libs/pluginloader
+	url = git@github.com:bl-sdk/pluginloader.git
 [submodule "common_cmake"]
 	path = common_cmake
 	url = https://github.com/bl-sdk/common_cmake.git
