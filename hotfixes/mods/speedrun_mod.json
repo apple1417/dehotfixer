@@ -1929,7 +1929,7 @@
     },
     {
       "key": "SparkPatchEntry14170343",
-      "value": "(1,1,0,),/Game/PatchDLC/Raid1/Gear/ClassMods/Operative/InvBalD_ClassMod_Operative_Infiltrator.InvBalD_ClassMod_Operative_Infiltrator,RuntimePartList.AllParts.AllParts[172],0,,(PartData=/Game/Gear/ClassMods/_Design/PartSets/Part_Skills/Operative/ClassMod_Part_Skill_Operative_ViolentViolence.ClassMod_Part_Skill_Operative_ViolentViolence,Weight=(BaseValueConstant=1,BaseValueScale=1))"
+      "value": "(1,1,0,),/Game/PatchDLC/Raid1/Gear/ClassMods/Operative/InvBalD_ClassMod_Operative_Infiltrator.InvBalD_ClassMod_Operative_Infiltrator,RuntimePartList.AllParts.AllParts[172],0,,(PartData=/Game/Gear/ClassMods/_Design/PartSets/Part_Skills/Operative/ClassMod_Part_Skill_Operative_Violent_Momentum.ClassMod_Part_Skill_Operative_Violent_Momentum,Weight=(BaseValueConstant=1,BaseValueScale=1))"
     },
     {
       "key": "SparkPatchEntry14170344",
@@ -1949,7 +1949,7 @@
     },
     {
       "key": "SparkPatchEntry14170348",
-      "value": "(1,1,0,),/Game/PatchDLC/Raid1/Gear/ClassMods/Operative/InvBalD_ClassMod_Operative_Infiltrator.InvBalD_ClassMod_Operative_Infiltrator,RuntimePartList.PartTypeTOC.PartTypeTOC[5].NumParts,0,,104"
+      "value": "(1,1,0,),/Game/PatchDLC/Raid1/Gear/ClassMods/Operative/InvBalD_ClassMod_Operative_Infiltrator.InvBalD_ClassMod_Operative_Infiltrator,RuntimePartList.PartTypeTOC.PartTypeTOC[5],0,,(StartIndex=171,NumParts=2)"
     },
     {
       "key": "SparkPatchEntry14170349",
